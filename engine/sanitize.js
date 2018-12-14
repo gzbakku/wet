@@ -1,10 +1,32 @@
+"use strict";
+
 const common = require('./common');
 const sanitize = require('htmlspecialchars');
 const log = false;
 
+module.exports = function doThis(item){
+
+  let type = getType(item);
+
+  if(type == 'object'){
+    return processObject(item);
+  }  else if(type == 'array'){
+    return processArray(item);
+  } else if(type == 'string'){
+     return processString(item);
+  } else {
+    return item;
+  }
+
+}
+
 function getType(object){
 
   common.tell('procesing-type',log);
+
+  if(object == null){
+    return null;
+  }
 
   let type = typeof(object);
 
@@ -104,21 +126,5 @@ function processObject(object){
   }
 
   return make;
-
-}
-
-module.exports = function doThis(item){
-
-  let type = getType(item);
-
-  if(type == 'object'){
-    return processObject(item);
-  }  else if(type == 'array'){
-    return processArray(item);
-  } else if(type == 'string'){
-     return processString(item);
-  } else {
-    return item;
-  }
 
 }

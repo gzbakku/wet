@@ -1,3 +1,5 @@
+"use strict";
+
 const uniqid = require('uniqid');
 const common = require('./common');
 const log = true;

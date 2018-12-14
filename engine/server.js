@@ -1,3 +1,5 @@
+"use strict";
+
 const common = require('./common');
 const log = true;
 const express = require('express');
@@ -8,9 +10,7 @@ module.exports = {
 
   app:null,
 
-  start : function(port,corsDo){
-
-    common.inform('starting server');
+  init : function(port,corsDo){
 
     if(this.app !== null){
       return true;

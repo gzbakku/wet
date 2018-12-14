@@ -1,9 +1,11 @@
+"use strict";
+
 const router = require('./db/router');
 const common = require('./common');
 
 const bank = ['firestore'];
 
-var address = null;
+var address = [];
 var dbName = null;
 var lastType = null;
 
@@ -21,7 +23,9 @@ module.exports = function(name){
     return common.error('invalid-db');
   } else {
     dbName = name;
+    address = [];
     return {
+      init:init,
       collection:collection
     }
   }
@@ -30,22 +34,21 @@ module.exports = function(name){
 //------------------------------------------------------------------------------
 // address builders
 
-function collection(name){
-  if(address == null){
-    address = 'collection(' + name + ')';
-  } else {
-    address = address + '.collection(' + name + ')';
-  }
+function collection(query){
+  address.push({type:'collection',query:query});
   lastType = 'collection';
   return {
     doc:doc,
     where:where,
     get:get,
+    delete:del,
+    orderBy:orderBy,
+    limit:limit
   }
 }
 
-function doc(name){
-  address = address + '.doc(' + name + ')';
+function doc(query){
+  address.push({type:'doc',query:query});
   lastType = 'doc';
   return {
     collection:collection,
@@ -53,12 +56,41 @@ function doc(name){
     get:get,
     insert:insert,
     update:update,
-    del:del
+    delete:del
   }
 }
 
-function where(query){
-  address = address + '.where(' + query + ')';
+function where(a,b,c){
+  address.push({type:'where',query:[a,b,c]});
+  return {
+    get:get,
+    update:update,
+    delete:del,
+    where:where,
+    orderBy:orderBy,
+    limit:limit
+  }
+}
+
+function orderBy(index,direction){
+  address.push({type:'orderBy',query:{index:index,direction:direction}});
+  return {
+    get:get,
+    limit:limit,
+    after:after
+  }
+}
+
+function limit(query){
+  address.push({type:'limit',query:query});
+  return {
+    get:get,
+    after:after
+  }
+}
+
+function after(name){
+  address.push({type:'after',query:name});
   return {
     get:get
   }
@@ -67,12 +99,16 @@ function where(query){
 //------------------------------------------------------------------------------
 // data processors
 
+function init(config){
+  return router[dbName].init(config);
+}
+
 function get(){
   return router[dbName].get();
 }
 
 function del(){
-  return router[dbName].del();
+  return router[dbName].delete();
 }
 
 function insert(object){

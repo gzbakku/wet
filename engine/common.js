@@ -1,3 +1,5 @@
+"use strict";
+
 const log = false;
 const chalk = require('chalk');
 const clog = console.log;

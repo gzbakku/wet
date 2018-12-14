@@ -2,3 +2,7 @@
 # folders
 app/
 node_modules/
+
+# files
+main.js
+test.js
