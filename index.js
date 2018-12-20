@@ -11,12 +11,13 @@ const id = require('./engine/id');
 const get = require('./engine/get');
 const time = require('./engine/time');
 
-//const validate = require('./engine/validate');
-const validate = require('./engine/valid');
+const validate = require('./engine/validate');
+//const validate = require('./engine/valid');
 
 const md5 = require('md5');
 const uniqid = require('uniqid');
 const fs = require('fs-extra');
+const request = require('request-promise');
 
 module.exports = {
   auth:auth,
@@ -32,5 +33,6 @@ module.exports = {
   fs:fs,
   get:get,
   time:time,
-  uniqid:uniqid
+  uniqid:uniqid,
+  request:request
 };
