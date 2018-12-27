@@ -8,6 +8,8 @@ const bank = ['firestore'];
 var address = [];
 var dbName = null;
 var lastType = null;
+var batchHolder = [];
+var batchExists = false;
 
 module.exports = function(name){
   if(name === 'getName'){
@@ -23,10 +25,11 @@ module.exports = function(name){
     return common.error('invalid-db');
   } else {
     dbName = name;
-    address = [];
+    //address = [];
     return {
       init:init,
-      collection:collection
+      collection:collection,
+      batch:batch
     }
   }
 }
@@ -96,25 +99,78 @@ function after(name){
   }
 }
 
+function batch(){
+
+  batchExists = true;
+  address = [];
+
+  return {
+    commit:commit,
+    insert:insert,
+    update:update,
+    delete:del,
+  }
+
+  function insert(object){
+    batchHolder.push({address:address,opp:'insert',data:object});
+    address = [];
+    return true;
+  }
+
+  function update(object){
+    batchHolder.push({address:address,opp:'update',data:object});
+    address = [];
+    return true;
+  }
+
+  function del(){
+    batchHolder.push({address:address,opp:'delete'});
+    address = [];
+    return true;
+  }
+
+}
+
 //------------------------------------------------------------------------------
 // data processors
 
 function init(config){
-  return router[dbName].init(config);
+  let work = router[dbName].init(config);
+  address = [];
+  return work;
 }
 
 function get(){
-  return router[dbName].get();
+  if(batchExists){address=[]; common.error('batch invalidated'); return common.error('commit the batch first');}
+  let work = router[dbName].get();
+  address = [];
+  return work;
 }
 
 function del(){
-  return router[dbName].delete();
+  if(batchExists){address=[]; common.error('batch invalidated'); return common.error('commit the batch first');}
+  let work = router[dbName].delete();
+  address = [];
+  return work;
 }
 
 function insert(object){
-  return router[dbName].insert(object);
+  if(batchExists){address=[]; common.error('batch invalidated'); return common.error('commit the batch first');}
+  let work = router[dbName].insert(object);
+  address = [];
+  return work;
 }
 
 function update(object){
-  return router[dbName].update(object);
+  if(batchExists){address=[]; common.error('batch invalidated'); return common.error('commit the batch first');}
+  let work = router[dbName].update(object);
+  address = [];
+  return work;
+}
+
+function commit(){
+  let work = router[dbName].commit(batchHolder);
+  address = [];
+  batchExists = false;
+  return work;
 }

@@ -72,39 +72,38 @@ module.exports = {
 
   keys:keys,
 
-  loadKeys : function(privateKeyLocation,publicKeyLocation){
+  readKeys : function(privateKeyLocation,publicKeyLocation){
 
-    if(privateKeyLocation == null){
-      return common.error('not_found-private_key');
+    if(!privateKeyLocation || !publicKeyLocation){
+      return common.error('not_found-location-private/public-keys');
     }
 
     let checkPrivate = fs.existsSync(privateKeyLocation);
-
-    if(checkPrivate == false){
+    if(!checkPrivate){
       return common.error('invalid_path-private_key');
     }
-
     let privateKey = fs.readFileSync(privateKeyLocation,'utf8');
 
-    keys.private = privateKey;
-
-    if(publicKeyLocation == null){
-      return true;
-    }
-
     let checkPublic = fs.existsSync(publicKeyLocation);
-
-    if(checkPublic == false){
+    if(!checkPublic){
       return common.error('invalid_path-private_key');
     }
-
     let publicKey = fs.readFileSync(publicKeyLocation,'utf8');
 
-    keys.public = publicKey;
+    return loadKeys(private,public);
 
-    common.success('auth keys loaded');
+  },
 
-    return true;
+  loadKeys : function(private,public){
+
+    if(!privateKey || !publicKey){
+      return common.error('not_found-private_key/public_key');
+    }
+
+    keys.private = private;
+    keys.public = public;
+
+    return common.success('auth keys loaded');
 
   },
 

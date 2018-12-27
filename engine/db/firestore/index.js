@@ -136,6 +136,50 @@ module.exports = {
     } else if(last == 'collection'){
       return wrath.clearCollection(address);
     }
+  },
+
+  commit : function(object){
+
+    return new Promise((resolve,reject)=>{
+
+      let error;
+
+      if(object.length == 0){
+        error = 'do something in the batch first';
+        reject(error);
+      }
+
+      const batch = this.db.batch();
+
+      for(var i=0;i<object.length;i++){
+
+        let holder = object[i];
+
+        let local = this.processAddress(holder.address);
+
+        if(holder.opp == 'insert'){
+          batch.set(local,holder.data);
+        }
+        if(holder.opp == 'update'){
+          batch.update(local,holder.data);
+        }
+        if(holder.opp == 'delete'){
+          batch.delete(local);
+        }
+
+      }
+
+      return batch.commit()
+      .then(()=>{
+        resolve();
+      })
+      .catch((error)=>{
+        reject(error);
+      });
+
+    });
+    //promise ends here
+
   }
 
 }
