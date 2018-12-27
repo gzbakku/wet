@@ -90,7 +90,7 @@ module.exports = {
     }
     let publicKey = fs.readFileSync(publicKeyLocation,'utf8');
 
-    return loadKeys(private,public);
+    return loadKeys(privateKey,publicKey);
 
   },
 
