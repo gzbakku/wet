@@ -96,7 +96,7 @@ module.exports = {
 
   loadKeys : function(private,public){
 
-    if(!privateKey || !publicKey){
+    if(!private || !public){
       return common.error('not_found-private_key/public_key');
     }
 
