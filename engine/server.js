@@ -10,17 +10,20 @@ module.exports = {
 
   app:null,
 
-  init : function(port,corsDo){
+  init : function(port,corsDo,fileSize){
 
     if(this.app !== null){
       return true;
+    }
+    if(!fileSize){
+      fileSize = '2mb';
     }
 
     //refer express to the app
     this.app = express();
 
     //express pugins
-    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.json({limit: fileSize}));
     if(corsDo == true){
       this.app.use(cors());
     }
