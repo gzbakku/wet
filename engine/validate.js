@@ -83,12 +83,7 @@ function json(schema,data,schema_type,maxSize){
     }
 
     //check if static data exists
-    if(needed == true && data[key]){
-      present = true;
-    }
-
-    //check if elective data exists
-    if(needed == false && data[key]){
+    if(data.hasOwnProperty(key) == true){
       present = true;
     }
 
