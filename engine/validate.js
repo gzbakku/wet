@@ -135,7 +135,7 @@ function json(schema,data,schema_type,maxSize){
     //check the number for schema key in data
     if(type == 'number' && present == true){
 
-      if(data[key] == false){
+      if(data[key] !== 0 && !data[key]){
         return common.error('not_found-data-schema_key_in_data-' + key);
         break;
       }
