@@ -83,8 +83,13 @@ function json(schema,data,schema_type,maxSize){
     }
 
     //check if static data exists
-    if(data.hasOwnProperty(key) == true){
+    if(data.hasOwnProperty(key) == true && data[key] !== undefined && data[key] !== null){
       present = true;
+    }
+	
+	//check if the data value is not false for non boolean keys
+	if(present && type !== 'boolean' && data[key] === false){
+      present = false;
     }
 
     //check if the data is needed and present
