@@ -140,9 +140,9 @@ function init(config){
   return work;
 }
 
-function get(){
+function get(cursor){
   if(batchExists){address=[]; common.error('batch invalidated'); return common.error('commit the batch first');}
-  let work = router[dbName].get();
+  let work = router[dbName].get(cursor);
   address = [];
   return work;
 }
