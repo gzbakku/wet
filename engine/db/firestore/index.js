@@ -39,6 +39,8 @@ module.exports = {
         local = local.where(item.query[0],item.query[1],item.query[2]);
       } else if(item.type == 'after'){
         local = local.startAfter(item.query);
+      } else if(item.type == 'before'){
+        local = local.endBefore(item.query);
       } else if(item.type == 'orderBy'){
         if(item.query.direction == 'asc'){
           local = local.orderBy(item.query.index,'asc');
