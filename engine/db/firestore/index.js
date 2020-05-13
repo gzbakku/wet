@@ -57,7 +57,7 @@ module.exports = {
 
   },
 
-  get : function(){
+  get : function(cursor){
 
     return new Promise((resolve,reject)=>{
 
@@ -74,8 +74,12 @@ module.exports = {
 
       if(last == 'doc'){
         return query.then((doc)=>{
-          let data = doc.data();
-          resolve(data);
+          if(cursor){
+            resolve(doc);
+          } else {
+            let data = doc.data();
+            resolve(data);
+          }
         })
         .catch((error)=>{
           reject(error);
