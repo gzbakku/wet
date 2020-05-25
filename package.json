@@ -1,6 +1,6 @@
 {
   "name": "wett",
-  "version": "0.0.845",
+  "version": "0.0.850",
   "description": "wett is a api layer between user api and db. provinding inbuilt user authentication via jwt and a db layer module to easily use multiple db with common functions",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,6 @@
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
-    "firebase-admin": "^6.2.0"
+    "firebase-admin": "^8.12.1"
   }
 }
