@@ -97,7 +97,6 @@ function json(schema,data,schema_type,maxSize){
 
     //check if data type is valid
     if(present == true && type !== 'email' && checkType(data[key]) !== type){
-      console.log(data[key]);
       return engine.common.error('invalid-data_type_for_key-' + key);
       break;
     }
