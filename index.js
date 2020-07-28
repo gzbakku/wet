@@ -10,6 +10,7 @@ const timer = require('./engine/timer');
 const id = require('./engine/id');
 const get = require('./engine/get');
 const time = require('./engine/time');
+const disk = require('./engine/disk');
 
 const validate = require('./engine/validate');
 //const validate = require('./engine/valid');
@@ -20,6 +21,7 @@ const fs = require('fs-extra');
 const request = require('request-promise');
 
 module.exports = {
+  disk:disk,
   auth:auth,
   server:server,
   validate:validate,
