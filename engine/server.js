@@ -6,11 +6,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+let app;
+
 module.exports = {
 
-  app:null,
+  app:app,
 
-  init : function(port,corsDo,fileSize){
+  init : function(port,corsDo,fileSize,baseDir){
 
     if(this.app !== null){
       return true;
@@ -20,12 +22,15 @@ module.exports = {
     }
 
     //refer express to the app
-    this.app = express();
+    app = express();
 
     //express pugins
-    this.app.use(bodyParser.json({limit: fileSize}));
+    app.use(bodyParser.json({limit: fileSize}));
     if(corsDo == true){
-      this.app.use(cors());
+      app.use(cors());
+    }
+    if(baseDir){
+      app.use(express.static(baseDir));
     }
 
     let thisPort = 8080;
@@ -35,7 +40,7 @@ module.exports = {
     }
 
     //start the server
-    this.app.listen(thisPort,()=>{
+    app.listen(thisPort,()=>{
       common.success('server listening at http://localhost:' + thisPort);
     });
 
