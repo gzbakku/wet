@@ -1,6 +1,6 @@
 {
   "name": "wett",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "wett is a api layer between user api and db. provinding inbuilt user authentication via jwt and a db layer module to easily use multiple db with common functions",
   "main": "index.js",
   "scripts": {

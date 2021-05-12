@@ -6,42 +6,40 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-let app;
-
 module.exports = {
 
-  app:app,
+  app:null,
 
   init : function(port,corsDo,fileSize,baseDir){
 
-    if(this.app !== null){
-      return true;
-    }
-    if(!fileSize){
-      fileSize = '2mb';
-    }
+    return new Promise((resolve,reject)=>{
 
-    //refer express to the app
-    app = express();
+      if(this.app !== null){
+        resolve();
+        return true;
+      }
+      if(!fileSize){
+        fileSize = '2mb';
+      }
 
-    //express pugins
-    app.use(bodyParser.json({limit: fileSize}));
-    if(corsDo == true){
-      app.use(cors());
-    }
-    if(baseDir){
-      app.use(express.static(baseDir));
-    }
+      //refer express to the app
+      this.app = express();
 
-    let thisPort = 8080;
+      //express pugins
+      this.app.use(bodyParser.json({limit: fileSize}));
+      if(corsDo == true){
+        this.app.use(cors());
+      }
+      if(baseDir){
+        this.app.use(express.static(baseDir));
+      }
 
-    if(port){
-      thisPort = port;
-    }
+      //start the server
+      this.app.listen(port,()=>{
+        resolve();
+        common.success('server listening at http://localhost:' + port);
+      });
 
-    //start the server
-    app.listen(thisPort,()=>{
-      common.success('server listening at http://localhost:' + thisPort);
     });
 
   }
