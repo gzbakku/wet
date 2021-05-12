@@ -36,5 +36,6 @@ module.exports = {
   get:get,
   time:time,
   uniqid:uniqid,
-  request:request
+  request:request,
+  express:require("express")
 };
